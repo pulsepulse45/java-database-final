@@ -1,26 +1,38 @@
 package com.project.code.Service;
 
+import com.project.code.Model.Inventory;
+import com.project.code.Model.Product;
+import com.project.code.Repo.InventoryRepository;
+import com.project.code.Repo.ProductRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class ServiceClass {
-    
-// 1. **validateInventory Method**:
-//    - Checks if an inventory record exists for a given product and store combination.
-//    - Parameters: `Inventory inventory`
-//    - Return Type: `boolean` (Returns `false` if inventory exists, otherwise `true`)
+    private final InventoryRepository inventoryRepository;
+    private final ProductRepository productRepository;
 
-// 2. **validateProduct Method**:
-//    - Checks if a product exists by its name.
-//    - Parameters: `Product product`
-//    - Return Type: `boolean` (Returns `false` if a product with the same name exists, otherwise `true`)
+    @Autowired
+    public ServiceClass(InventoryRepository inventoryRepository, ProductRepository productRepository) {
+        this.inventoryRepository = inventoryRepository;
+        this.productRepository = productRepository;
+    }
 
-// 3. **ValidateProductId Method**:
-//    - Checks if a product exists by its ID.
-//    - Parameters: `long id`
-//    - Return Type: `boolean` (Returns `false` if the product does not exist with the given ID, otherwise `true`)
+    public boolean validateInventory(Inventory inventory) {
+        Inventory existing = inventoryRepository.findByProductIdandStoreId(inventory.getProduct().getId(), inventory.getStore().getId());
+        return existing == null;
+    }
 
-// 4. **getInventoryId Method**:
-//    - Fetches the inventory record for a given product and store combination.
-//    - Parameters: `Inventory inventory`
-//    - Return Type: `Inventory` (Returns the inventory record for the product-store combination)
+    public boolean validateProduct(Product product) {
+        Product existing = productRepository.findByName(product.getName());
+        return existing == null;
+    }
 
+    public boolean validateProductId(long id) {
+        return productRepository.findById(id) != null;
+    }
+
+    public Inventory getInventoryId(Inventory inventory) {
+        return inventoryRepository.findByProductIdandStoreId(inventory.getProduct().getId(), inventory.getStore().getId());
+    }
 }
