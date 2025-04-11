@@ -21,18 +21,23 @@ public class ReviewController {
     private CustomerRepository customerRepository;
 
     @GetMapping("/{storeId}/{productId}")
-    public Map<String, Object> getReviews(@PathVariable Long storeId, @PathVariable Long productId) {
-        Map<String, Object> response = new HashMap<>();
-        List<Review> reviews = reviewRepository.findByStoreIdAndProductId(storeId, productId);
-        List<Map<String, Object>> reviewData = reviews.stream().map(review -> {
-            Map<String, Object> reviewMap = new HashMap<>();
-            reviewMap.put("comment", review.getComment());
-            reviewMap.put("rating", review.getRating());
-            Customer customer = customerRepository.findById(review.getCustomerId());
-            reviewMap.put("customerName", customer != null ? customer.getName() : "Unknown");
-            return reviewMap;
-        }).collect(Collectors.toList());
-        response.put("reviews", reviewData);
-        return response;
-    }
+public Map<String, Object> getReviews(@PathVariable Long storeId, @PathVariable Long productId) {
+    Map<String, Object> response = new HashMap<>();
+    List<Review> reviews = reviewRepository.findByStoreIdAndProductId(storeId, productId);
+    List<Map<String, Object>> reviewData = reviews.stream().map(review -> {
+        Map<String, Object> reviewMap = new HashMap<>();
+        reviewMap.put("comment", review.getComment());
+        reviewMap.put("rating", review.getRating());
+        
+        // Use Optional to get Customer
+        Customer customer = customerRepository.findById(review.getCustomerId())
+                                    .orElse(null); // Handle not found gracefully
+        
+        reviewMap.put("customerName", customer != null ? customer.getName() : "Unknown");
+        return reviewMap;
+    }).collect(Collectors.toList());
+    response.put("reviews", reviewData);
+    return response;
+}
+
 }

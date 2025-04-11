@@ -39,14 +39,14 @@ public class ProductController {
         return response;
     }
 
-    @GetMapping("/product/{id}")
-    public Map<String, Object> getProductbyId(@PathVariable Long id) {
-        Map<String, Object> response = new HashMap<>();
-        Product product = productRepository.findById(id);
-        response.put("products", product);
-        return response;
-    }
-
+ @GetMapping("/product/{id}")
+public Map<String, Object> getProductbyId(@PathVariable Long id) {
+    Map<String, Object> response = new HashMap<>();
+    Product product = productRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Product not found"));
+    response.put("product", product);
+    return response;
+}
     @PutMapping
     public Map<String, String> updateProduct(@RequestBody Product product) {
         Map<String, String> response = new HashMap<>();

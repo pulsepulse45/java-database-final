@@ -5,6 +5,7 @@ import java.util.List;
 
 public class PlaceOrderRequestDTO {
     private Long storeId;
+    private Long productId;
     private String customerName;
     private String customerEmail;
     private String customerPhone;
@@ -13,6 +14,12 @@ public class PlaceOrderRequestDTO {
     private Double totalPrice;
 
     // Getters and Setters
+    public Long getProductId() {
+        return productId;
+    }
+    public void setProductId(Long productId) {
+        this.productId = productId;
+    }
 
     public Long getStoreId() {
         return storeId;

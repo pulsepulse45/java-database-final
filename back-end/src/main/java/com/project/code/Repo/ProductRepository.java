@@ -4,6 +4,7 @@ import com.project.code.Model.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import java.util.List;
+import java.util.Optional;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findAll();
@@ -11,7 +12,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findByPriceBetween(Double minPrice, Double maxPrice);
     List<Product> findBySku(String sku);
     Product findByName(String name);
-    Product findById(Long id);
+    @Override
+Optional<Product> findById(Long id);
 
     @Query("SELECT i.product FROM Inventory i WHERE i.store.id = :storeId AND LOWER(i.product.name) LIKE LOWER(CONCAT('%', :pname, '%'))")
     List<Product> findByNameLike(Long storeId, String pname);

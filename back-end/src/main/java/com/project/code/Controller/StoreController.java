@@ -3,10 +3,11 @@ package com.project.code.Controller;
 import com.project.code.Model.Store;
 import com.project.code.Repo.StoreRepository;
 import com.project.code.Service.OrderService;
-import com.project.code.Service.PlaceOrderRequestDTO;
+import com.project.code.Model.PlaceOrderRequestDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
+import java.util.Optional;
 import java.util.Map;
 
 @RestController
